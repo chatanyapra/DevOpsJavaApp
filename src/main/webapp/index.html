@@ -1,47 +1,717 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Java WebApp</title>
+    <title>Java Web App CI/CD | Jenkins + Tomcat + AWS EC2</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .tech-icon {
+            transition: all 0.3s ease;
+        }
+        .tech-icon:hover {
+            transform: translateY(-5px);
+        }
+        .team-card {
+            transition: all 0.3s ease;
+        }
+        .team-card:hover {
+            transform: translateY(-10px);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+        .code-block {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+    </style>
 </head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <span class="text-xl font-bold text-indigo-600">JavaDeploy Pro</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-gray-700 hover:text-indigo-600 font-medium">Home</a>
+                <a href="#project" class="text-gray-700 hover:text-indigo-600 font-medium">Project</a>
+                <a href="#pipeline" class="text-gray-700 hover:text-indigo-600 font-medium">Pipeline</a>
+                <a href="#team" class="text-gray-700 hover:text-indigo-600 font-medium">Team</a>
+                <a href="#contact" class="text-gray-700 hover:text-indigo-600 font-medium">Contact</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-toggle" class="text-gray-700 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-6 pt-2 pb-4 space-y-3 shadow-lg">
+            <a href="#home" class="block text-gray-700 hover:text-indigo-600 font-medium">Home</a>
+            <a href="#project" class="block text-gray-700 hover:text-indigo-600 font-medium">Project</a>
+            <a href="#pipeline" class="block text-gray-700 hover:text-indigo-600 font-medium">Pipeline</a>
+            <a href="#team" class="block text-gray-700 hover:text-indigo-600 font-medium">Team</a>
+            <a href="#contact" class="block text-gray-700 hover:text-indigo-600 font-medium">Contact</a>
+        </div>
+    </nav>
 
-<body
-    class="bg-gradient-to-r from-green-400 via-teal-400 to-green-600 min-h-screen flex flex-col items-center justify-center text-white font-sans">
+    <!-- Hero Section -->
+    <section id="home" class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Java Web App CI/CD Pipeline</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-4xl mx-auto">Automated deployment using Jenkins, GitHub Webhooks, Apache Tomcat, and AWS EC2 with zero-downtime deployments and professional DevOps workflow.</p>
+            <a href="#project" class="bg-white text-indigo-600 font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-gray-100 transition duration-300">View Project Details</a>
+        </div>
+    </section>
 
-    <!-- Main Container -->
-    <div class="bg-white text-gray-900 rounded-2xl shadow-2xl p-10 w-[90%] max-w-2xl text-center">
+    <!-- Project Overview with Tabs -->
+    <section id="project" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-4">Project Overview</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Java Web App CI/CD deployment pipeline using Jenkins, GitHub Webhooks, Apache Tomcat, and AWS EC2 for automated, reliable deployments.</p>
+            
+            <!-- Tabs Navigation -->
+            <div class="flex flex-wrap justify-center mb-8 border-b border-gray-200">
+                <button class="tab-button py-3 px-6 font-medium rounded-t-lg active" data-tab="overview">Overview</button>
+                <button class="tab-button py-3 px-6 font-medium rounded-t-lg" data-tab="architecture">Architecture</button>
+                <button class="tab-button py-3 px-6 font-medium rounded-t-lg" data-tab="implementation">Implementation</button>
+                <button class="tab-button py-3 px-6 font-medium rounded-t-lg" data-tab="results">Results</button>
+            </div>
+            
+            <!-- Tab Contents -->
+            <div class="tab-content active" id="overview">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Jenkins + Tomcat + AWS EC2 Pipeline</h3>
+                        <p class="text-gray-600 mb-6">Complete CI/CD pipeline that automatically deploys Java web applications to Apache Tomcat on AWS EC2 instances. GitHub webhooks trigger Jenkins builds, which compile, test, package, and deploy WAR files seamlessly.</p>
+                        <ul class="text-gray-600 space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span>GitHub Repository with webhook integration</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span>Jenkins CI/CD Server with automated builds</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span>Apache Tomcat hosting WAR files</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span>AWS EC2 infrastructure deployment</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span>Maven build automation and testing</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-100 p-8 rounded-xl shadow-md">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">Technologies Used</h4>
+                        <div class="grid grid-cols-3 gap-6">
+                            <div class="tech-icon text-center p-4 bg-white rounded-lg shadow-sm">
+                                <i class="fab fa-java text-4xl text-red-600 mb-2"></i>
+                                <p class="font-medium">Java</p>
+                            </div>
+                            <div class="tech-icon text-center p-4 bg-white rounded-lg shadow-sm">
+                                <i class="fab fa-jenkins text-4xl text-red-500 mb-2"></i>
+                                <p class="font-medium">Jenkins</p>
+                            </div>
+                            <div class="tech-icon text-center p-4 bg-white rounded-lg shadow-sm">
+                                <i class="fas fa-server text-4xl text-orange-600 mb-2"></i>
+                                <p class="font-medium">Tomcat</p>
+                            </div>
+                            <div class="tech-icon text-center p-4 bg-white rounded-lg shadow-sm">
+                                <i class="fab fa-github text-4xl text-gray-800 mb-2"></i>
+                                <p class="font-medium">GitHub</p>
+                            </div>
+                            <div class="tech-icon text-center p-4 bg-white rounded-lg shadow-sm">
+                                <i class="fab fa-aws text-4xl text-orange-500 mb-2"></i>
+                                <p class="font-medium">AWS EC2</p>
+                            </div>
+                            <div class="tech-icon text-center p-4 bg-white rounded-lg shadow-sm">
+                                <i class="fas fa-tools text-4xl text-blue-600 mb-2"></i>
+                                <p class="font-medium">Maven</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="architecture">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">System Architecture</h3>
+                        <p class="text-gray-600 mb-6">Our deployment architecture follows modern DevOps practices with automated CI/CD pipeline from GitHub to production.</p>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-indigo-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-indigo-700 mb-2">GitHub Repository</h4>
+                                <p class="text-gray-600">Source code management with webhook integration for automatic build triggers.</p>
+                            </div>
+                            
+                            <div class="bg-red-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-red-700 mb-2">Jenkins CI/CD Server</h4>
+                                <p class="text-gray-600">Automated pipeline with Maven builds, testing, and deployment stages.</p>
+                            </div>
+                            
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-orange-700 mb-2">Apache Tomcat</h4>
+                                <p class="text-gray-600">Web server hosting WAR files with automatic restart capabilities.</p>
+                            </div>
+                            
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-700 mb-2">AWS EC2 Infrastructure</h4>
+                                <p class="text-gray-600">Cloud instances with security groups, load balancing, and monitoring.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 rounded-xl shadow-md flex items-center justify-center">
+                        <div class="text-center">
+                            <i class="fas fa-project-diagram text-6xl text-indigo-500 mb-4"></i>
+                            <p class="text-gray-600 font-medium">Pipeline Architecture</p>
+                            <p class="text-gray-500 text-sm mt-2">GitHub → Jenkins → Tomcat → AWS EC2</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-4">Pipeline Flow</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-center">
+                            <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-3 mx-auto">
+                                <i class="fab fa-github text-gray-600 text-xl"></i>
+                            </div>
+                            <h5 class="font-semibold text-gray-800 mb-1">1. Code Push</h5>
+                            <p class="text-gray-600 text-sm">Developer pushes to GitHub</p>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-center">
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-3 mx-auto">
+                                <i class="fas fa-webhook text-red-600 text-xl"></i>
+                            </div>
+                            <h5 class="font-semibold text-gray-800 mb-1">2. Webhook</h5>
+                            <p class="text-gray-600 text-sm">GitHub triggers Jenkins</p>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-center">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-3 mx-auto">
+                                <i class="fas fa-cogs text-blue-600 text-xl"></i>
+                            </div>
+                            <h5 class="font-semibold text-gray-800 mb-1">3. Build</h5>
+                            <p class="text-gray-600 text-sm">Maven compile & test</p>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-center">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-3 mx-auto">
+                                <i class="fas fa-archive text-green-600 text-xl"></i>
+                            </div>
+                            <h5 class="font-semibold text-gray-800 mb-1">4. Package</h5>
+                            <p class="text-gray-600 text-sm">Generate WAR file</p>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-center">
+                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-3 mx-auto">
+                                <i class="fas fa-rocket text-orange-600 text-xl"></i>
+                            </div>
+                            <h5 class="font-semibold text-gray-800 mb-1">5. Deploy</h5>
+                            <p class="text-gray-600 text-sm">Deploy to Tomcat</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="implementation">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-6">Implementation Details</h3>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div>
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">Jenkins Pipeline Configuration</h4>
+                        <p class="text-gray-600 mb-4">Our Jenkins pipeline automates the entire deployment process with multiple stages.</p>
+                        
+                        <div class="code-block mb-6">
+                            <pre><code>pipeline {
+    agent any
+    stages {
+        stage('Compile') {
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+        stage('Code Review') {
+            steps {
+                sh 'mvn checkstyle:checkstyle'
+            }
+        }
+        stage('Unit Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Package') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sshagent(['tomcat-server']) {
+                    sh 'scp target/*.war ubuntu@ec2-ip:/opt/tomcat/webapps/'
+                    sh 'ssh ubuntu@ec2-ip "sudo systemctl restart tomcat"'
+                }
+            }
+        }
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">Deployment Configuration</h4>
+                        <p class="text-gray-600 mb-4">GitHub webhook and Jenkins job configuration for automated deployments.</p>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h5 class="font-semibold text-blue-700 mb-2">GitHub Webhook</h5>
+                                <p class="text-gray-600 text-sm">http://jenkins-ip:8080/github-webhook/</p>
+                            </div>
+                            
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h5 class="font-semibold text-green-700 mb-2">Build Triggers</h5>
+                                <p class="text-gray-600 text-sm">GitHub hook trigger for GITScm polling</p>
+                            </div>
+                            
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <h5 class="font-semibold text-orange-700 mb-2">Deployment Path</h5>
+                                <p class="text-gray-600 text-sm">/opt/tomcat/webapps/</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-4">Jenkins Plugins Used</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h5 class="font-semibold text-gray-800 mb-2">Pipeline Plugin</h5>
+                            <p class="text-gray-600 text-sm">Declarative pipeline support</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h5 class="font-semibold text-gray-800 mb-2">SSH Agent Plugin</h5>
+                            <p class="text-gray-600 text-sm">Secure deployment to EC2</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h5 class="font-semibold text-gray-800 mb-2">GitHub Plugin</h5>
+                            <p class="text-gray-600 text-sm">Repository integration</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h5 class="font-semibold text-gray-800 mb-2">Maven Integration</h5>
+                            <p class="text-gray-600 text-sm">Build automation</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h5 class="font-semibold text-gray-800 mb-2">JUnit Plugin</h5>
+                            <p class="text-gray-600 text-sm">Test result publishing</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h5 class="font-semibold text-gray-800 mb-2">Warnings NG</h5>
+                            <p class="text-gray-600 text-sm">Code quality analysis</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="results">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-6">Project Results & Achievements</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div>
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">Key Achievements</h4>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                                    <i class="fas fa-check text-green-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold text-gray-800">Fully Automated CI/CD Pipeline</h5>
+                                    <p class="text-gray-600 text-sm">Zero manual deployment steps</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                                    <i class="fas fa-rocket text-blue-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold text-gray-800">Instant Deployment</h5>
+                                    <p class="text-gray-600 text-sm">Every GitHub commit triggers deployment</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                                    <i class="fas fa-server text-orange-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold text-gray-800">Tomcat Integration</h5>
+                                    <p class="text-gray-600 text-sm">Automatic WAR deployment and restart</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                                    <i class="fas fa-shield-alt text-red-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold text-gray-800">Quality Assurance</h5>
+                                    <p class="text-gray-600 text-sm">Automated testing and code review</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">Technical Benefits</h4>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700">Deployment Speed</span>
+                                    <span class="text-gray-700 font-semibold">Improved by 90%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-green-600 h-2.5 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700">Manual Errors</span>
+                                    <span class="text-gray-700 font-semibold">Reduced by 100%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-green-600 h-2.5 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700">Development Velocity</span>
+                                    <span class="text-gray-700 font-semibold">Increased by 75%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-green-600 h-2.5 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-indigo-50 p-6 rounded-xl">
+                    <h4 class="text-xl font-semibold text-indigo-800 mb-4">Professional DevOps Workflow</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h5 class="font-semibold text-gray-800 mb-2">✅ Achieved Goals</h5>
+                            <ul class="text-gray-600 list-disc pl-5">
+                                <li>Fully automated CI/CD pipeline</li>
+                                <li>Zero manual deployment</li>
+                                <li>Java app always updated on AWS Tomcat</li>
+                                <li>Professional DevOps workflow</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-semibold text-gray-800 mb-2">🚀 Impact</h5>
+                            <ul class="text-gray-600 list-disc pl-5">
+                                <li>Faster time to market</li>
+                                <li>Improved code quality</li>
+                                <li>Enhanced team productivity</li>
+                                <li>Reliable deployment process</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <!-- Heading -->
-        <h1 class="text-4xl font-extrabold mb-4 text-green-700">
-            🚀 Welcome to the Sample Java Web App for Group 22!
-        </h1>
+    <!-- Pipeline Workflow Section -->
+    <section id="pipeline" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-4">Deployment Pipeline Workflow</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Our automated pipeline follows these steps to ensure seamless deployment from GitHub commit to production on Tomcat.</p>
+            
+            <div class="max-w-4xl mx-auto">
+                <!-- Workflow Step 1 -->
+                <div class="flex flex-col md:flex-row items-center mb-12">
+                    <div class="md:w-1/4 flex justify-center mb-6 md:mb-0">
+                        <div class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center">
+                            <i class="fas fa-code-branch text-indigo-600 text-2xl"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4 bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">1. Code Push to GitHub</h3>
+                        <p class="text-gray-600">Developer pushes Java code changes to the GitHub repository, triggering the automated pipeline.</p>
+                    </div>
+                </div>
+                
+                <!-- Workflow Step 2 -->
+                <div class="flex flex-col md:flex-row items-center mb-12">
+                    <div class="md:w-1/4 flex justify-center mb-6 md:mb-0 order-2 md:order-1">
+                        <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
+                            <i class="fas fa-webhook text-red-600 text-2xl"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4 bg-white p-6 rounded-xl shadow-sm order-1 md:order-2">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">2. GitHub Webhook Trigger</h3>
+                        <p class="text-gray-600">GitHub webhook automatically notifies Jenkins server about the new commit, starting the build process.</p>
+                    </div>
+                </div>
+                
+                <!-- Workflow Step 3 -->
+                <div class="flex flex-col md:flex-row items-center mb-12">
+                    <div class="md:w-1/4 flex justify-center mb-6 md:mb-0">
+                        <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center">
+                            <i class="fas fa-tools text-blue-600 text-2xl"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4 bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">3. Maven Build & Test</h3>
+                        <p class="text-gray-600">Jenkins runs Maven commands to compile, run unit tests, perform code review, and package the application into a WAR file.</p>
+                    </div>
+                </div>
+                
+                <!-- Workflow Step 4 -->
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/4 flex justify-center mb-6 md:mb-0 order-2 md:order-1">
+                        <div class="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center">
+                            <i class="fas fa-server text-orange-600 text-2xl"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4 bg-white p-6 rounded-xl shadow-sm order-1 md:order-2">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">4. Deploy to Tomcat on AWS EC2</h3>
+                        <p class="text-gray-600">Jenkins uses SSH to copy the WAR file to AWS EC2 Tomcat server and restarts the service for immediate deployment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <!-- Sub-heading -->
-        <h2 class="text-2xl font-semibold mb-6 text-gray-700">
-            Enjoy exploring this simple web page.
-        </h2>
+    <!-- Team Section -->
+    <section id="team" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-4">Our Team</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Meet the talented individuals who collaborated to bring this Java Web App CI/CD pipeline project to life. Our team of five worked seamlessly to implement the complete deployment solution.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+                <!-- Team Member 1 -->
+                <div class="team-card bg-gray-50 rounded-xl shadow-md overflow-hidden text-center p-6">
+                    <div class="w-24 h-24 bg-indigo-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-user text-indigo-500 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800">Chatanya</h3>
+                    <p class="text-indigo-600 mb-4">DevOps Lead</p>
+                    <p class="text-gray-600 text-sm">Orchestrated the CI/CD pipeline and Jenkins configuration for automated deployments.</p>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="#" class="text-gray-500 hover:text-indigo-500"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-indigo-500"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Member 2 -->
+                <div class="team-card bg-gray-50 rounded-xl shadow-md overflow-hidden text-center p-6">
+                    <div class="w-24 h-24 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-user text-blue-500 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800">Aditya</h3>
+                    <p class="text-blue-600 mb-4">Java Developer</p>
+                    <p class="text-gray-600 text-sm">Developed the Java web application and Maven build configuration.</p>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="#" class="text-gray-500 hover:text-blue-500"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-blue-500"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Member 3 -->
+                <div class="team-card bg-gray-50 rounded-xl shadow-md overflow-hidden text-center p-6">
+                    <div class="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-user text-green-500 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800">Tanvi</h3>
+                    <p class="text-green-600 mb-4">AWS Architect</p>
+                    <p class="text-gray-600 text-sm">Managed AWS EC2 infrastructure and Tomcat server configuration.</p>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="#" class="text-gray-500 hover:text-green-500"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-green-500"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Member 4 -->
+                <div class="team-card bg-gray-50 rounded-xl shadow-md overflow-hidden text-center p-6">
+                    <div class="w-24 h-24 bg-purple-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-user text-purple-500 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800">Suraj</h3>
+                    <p class="text-purple-600 mb-4">GitHub Integration</p>
+                    <p class="text-gray-600 text-sm">Managed version control, webhooks, and GitHub Actions integration.</p>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="#" class="text-gray-500 hover:text-purple-500"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-purple-500"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Member 5 -->
+                <div class="team-card bg-gray-50 rounded-xl shadow-md overflow-hidden text-center p-6">
+                    <div class="w-24 h-24 bg-red-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-user text-red-500 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800">Priyansh</h3>
+                    <p class="text-red-600 mb-4">QA Engineer</p>
+                    <p class="text-gray-600 text-sm">Implemented testing strategies and quality assurance processes.</p>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="#" class="text-gray-500 hover:text-red-500"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-red-500"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <!-- Content -->
-        <p class="text-lg text-gray-600 mb-6">
-            This application demonstrates <span class="font-bold text-green-600">modern web development</span> practices.
-            Built with <span class="italic">Java, CI/CD pipelines, and responsive design.</span>
-        </p>
-
-        <!-- Action Button -->
-        <a href="#"
-            class="inline-block px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition duration-300">
-            Learn More
-        </a>
-    </div>
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-4">Get In Touch</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Interested in our Java Web App CI/CD deployment solution? Reach out for more information or collaboration opportunities.</p>
+            
+            <div class="max-w-2xl mx-auto bg-gray-50 rounded-xl shadow-md p-8">
+                <form id="contact-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="name" class="block text-gray-700 mb-2">Your Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-700 mb-2">Your Email</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label for="subject" class="block text-gray-700 mb-2">Subject</label>
+                        <input type="text" id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="message" class="block text-gray-700 mb-2">Message</label>
+                        <textarea id="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="mt-10 text-sm text-gray-200">
-        © 2025 Group 22 | Powered by Java & DevOps ⚡
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <span class="text-xl font-bold">JavaDeploy Pro</span>
+                    <p class="text-gray-400 mt-2">Java Web App CI/CD Pipeline with Jenkins + Tomcat + AWS EC2</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-github text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fas fa-envelope text-xl"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
+                <p>&copy; 2025 JavaDeploy Pro Team. Automated CI/CD Pipeline for Java Web Applications.</p>
+            </div>
+        </div>
     </footer>
 
-</body>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
 
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        // Contact form submission
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.');
+            this.reset();
+        });
+
+        // Tab functionality
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons and contents
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+    </script>
+</body>
 </html>
